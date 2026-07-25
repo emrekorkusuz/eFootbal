@@ -637,33 +637,10 @@ downloadImage.onclick=()=>{
 
     html2canvas(document.getElementById("shareCard"),{
         scale:2,
-        backgroundColor:"#111",
-        useCORS:true
+        backgroundColor:"#111"
     }).then(canvas=>{
 
-        canvas.toBlob(async (blob) => {
-
-            const file = new File(
-                [blob],
-                "puan-durumu.png",
-                { type: "image/png" }
-            );
-
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-
-                await navigator.share({
-                    files: [file],
-                    title: "Puan Durumu"
-                });
-
-            } else {
-
-                const url = URL.createObjectURL(blob);
-                location.href = url;
-
-            }
-
-        });
+        document.body.appendChild(canvas);
 
     });
 
