@@ -590,22 +590,31 @@ function loadData(){
 
 }
 
+//======================================
+// YAYIN GRAFİĞİ OLUŞTUR
+//======================================
+
 const downloadImage=document.getElementById("downloadImage");
+
 
 downloadImage.onclick=()=>{
 
-    console.log("Butona basıldı");
-    document.getElementById("shareLeague").innerText=league.name;
 
-    document.getElementById("shareSeason").innerText=league.season;
+    document.getElementById("shareLeague").innerText = league.name;
 
-    const body=document.getElementById("shareStandings");
+    document.getElementById("shareSeason").innerText = league.season;
 
-    body.innerHTML="";
+
+    const body = document.getElementById("shareStandings");
+
+
+    body.innerHTML = "";
+
 
     players.forEach((p,index)=>{
 
-        body.innerHTML+=`
+
+        body.innerHTML += `
 
         <tr>
 
@@ -633,15 +642,94 @@ downloadImage.onclick=()=>{
 
         `;
 
+
     });
 
-    html2canvas(document.getElementById("shareCard"),{
+
+
+    const card = document.getElementById("shareCard");
+
+
+    html2canvas(card,{
+
         scale:2,
-        backgroundColor:"#111"
-    }).then(canvas=>{
 
-        document.body.appendChild(canvas);
+        backgroundColor:"#111",
+
+        useCORS:true
+
+    })
+
+    .then(canvas=>{
+
+
+        canvas.toBlob(async(blob)=>{
+
+
+            const file = new File(
+
+                [blob],
+
+                "puan-durumu.png",
+
+                {
+                    type:"image/png"
+                }
+
+            );
+
+
+
+            // iPhone paylaşım
+
+            if(
+                navigator.canShare &&
+                navigator.canShare({
+                    files:[file]
+                })
+            ){
+
+
+                await navigator.share({
+
+                    files:[file],
+
+                    title:"eFootball League"
+
+                });
+
+
+            }
+
+
+            else{
+
+
+                const url = URL.createObjectURL(blob);
+
+
+                const img=document.createElement("img");
+
+
+                img.src=url;
+
+
+                img.style.width="100%";
+
+
+                document.body.appendChild(img);
+
+
+            }
+
+
+
+        });
+
+
 
     });
+
+
 
 };
