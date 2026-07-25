@@ -595,29 +595,35 @@ function loadData(){
 // YAYIN GRAFİĞİ OLUŞTUR
 //======================================
 
+//======================================
+// YAYIN GRAFİĞİ
+//======================================
+
 const downloadImage=document.getElementById("downloadImage");
 
 
 downloadImage.onclick=()=>{
 
 
-    document.getElementById("shareLeague").innerText = league.name;
-
-    document.getElementById("shareSeason").innerText = league.season;
-
-
-    const body = document.getElementById("shareStandings");
-    const matchBox = document.getElementById("shareMatches");
-    matchBox.innerHTML="";
+    document.getElementById("shareLeague").innerText =
+    league.name;
 
 
-    body.innerHTML = "";
+    document.getElementById("shareSeason").innerText =
+    league.season;
+
+
+
+    const body=document.getElementById("shareStandings");
+
+    body.innerHTML="";
+
 
 
     players.forEach((p,index)=>{
 
 
-        body.innerHTML += `
+        body.innerHTML+=`
 
         <tr>
 
@@ -648,15 +654,24 @@ downloadImage.onclick=()=>{
 
     });
 
+
+
+    const matchBox=document.getElementById("shareMatches");
+
+
+    matchBox.innerHTML="";
+
+
+
     matches.forEach(match=>{
 
 
-        const home = players.find(
+        const home=players.find(
             p=>p.id===match.home
         );
 
 
-        const away = players.find(
+        const away=players.find(
             p=>p.id===match.away
         );
 
@@ -666,33 +681,36 @@ downloadImage.onclick=()=>{
 
 
 
-        matchBox.innerHTML += `
+        matchBox.innerHTML+=`
 
         <div class="shareMatch">
 
-            <b>${match.round}. Hafta</b>
-
-            <span>
-            ${home.name}
-            </span>
+        <span>
+        ${match.round}. Hafta
+        </span>
 
 
-            <strong>
-
-            ${
-                match.hs===null
-                ?
-                "-"
-                :
-                match.hs+" - "+match.as
-            }
-
-            </strong>
+        <b>
+        ${home.name}
+        </b>
 
 
-            <span>
-            ${away.name}
-            </span>
+        <strong>
+
+        ${
+            match.hs===null
+            ?
+            "-"
+            :
+            match.hs+" - "+match.as
+        }
+
+        </strong>
+
+
+        <b>
+        ${away.name}
+        </b>
 
 
         </div>
@@ -704,7 +722,11 @@ downloadImage.onclick=()=>{
 
 
 
-    const card = document.getElementById("shareCard");
+    const card=document.getElementById("shareCard");
+
+
+    card.style.left="0px";
+
 
 
     html2canvas(card,{
@@ -720,14 +742,18 @@ downloadImage.onclick=()=>{
     .then(canvas=>{
 
 
+        card.style.left="-9999px";
+
+
+
         canvas.toBlob(async(blob)=>{
 
 
-            const file = new File(
+            const file=new File(
 
                 [blob],
 
-                "puan-durumu.png",
+                "efootball-lig.png",
 
                 {
                     type:"image/png"
@@ -736,8 +762,6 @@ downloadImage.onclick=()=>{
             );
 
 
-
-            // iPhone paylaşım
 
             if(
                 navigator.canShare &&
@@ -751,7 +775,7 @@ downloadImage.onclick=()=>{
 
                     files:[file],
 
-                    title:"eFootball League"
+                    title:league.name
 
                 });
 
@@ -759,34 +783,10 @@ downloadImage.onclick=()=>{
             }
 
 
-            else{
-
-
-                const url = URL.createObjectURL(blob);
-
-
-                const img=document.createElement("img");
-
-
-                img.src=url;
-
-
-                img.style.width="100%";
-
-
-                document.body.appendChild(img);
-
-
-            }
-
-
-
         });
 
 
-
     });
-
 
 
 };

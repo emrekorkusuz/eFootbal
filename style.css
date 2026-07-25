@@ -332,13 +332,22 @@ tbody tr:nth-child(3){
 
 .shareCard{
 
-position:fixed;
+position:absolute;
 
-left:0;
+left:-9999px;
 
 top:0;
 
-visibility:hidden;
+width:1920px;
+
+min-height:1080px;
+
+background:#111;
+
+color:white;
+
+padding:80px;
+
 }
 
 .shareHeader{
