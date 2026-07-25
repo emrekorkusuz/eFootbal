@@ -641,17 +641,29 @@ downloadImage.onclick=()=>{
         useCORS:true
     }).then(canvas=>{
 
-        const data = canvas.toDataURL("image/png");
+        canvas.toBlob(async (blob) => {
 
-        const win = window.open();
+            const file = new File(
+                [blob],
+                "puan-durumu.png",
+                { type: "image/png" }
+            );
 
-        win.document.write(`
-            <html>
-            <body style="margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;">
-                <img src="${data}" style="width:100%;height:auto;">
-            </body>
-            </html>
-        `);
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+                await navigator.share({
+                    files: [file],
+                    title: "Puan Durumu"
+                });
+
+            } else {
+
+                const url = URL.createObjectURL(blob);
+                location.href = url;
+
+            }
+
+        });
 
     });
 
