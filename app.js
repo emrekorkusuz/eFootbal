@@ -723,27 +723,18 @@ downloadImage.onclick=()=>{
 
 
     const card=document.getElementById("shareCard");
-
-
-    card.style.left="0px";
-
-
-
     html2canvas(card,{
 
         scale:2,
 
         backgroundColor:"#111",
 
-        useCORS:true
+        useCORS:true,
+
+        logging:false
 
     })
-
     .then(canvas=>{
-
-
-        card.style.left="-9999px";
-
 
 
         canvas.toBlob(async(blob)=>{
@@ -762,14 +753,12 @@ downloadImage.onclick=()=>{
             );
 
 
-
             if(
                 navigator.canShare &&
                 navigator.canShare({
                     files:[file]
                 })
             ){
-
 
                 await navigator.share({
 
@@ -778,7 +767,6 @@ downloadImage.onclick=()=>{
                     title:league.name
 
                 });
-
 
             }
 

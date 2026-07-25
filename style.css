@@ -332,21 +332,21 @@ tbody tr:nth-child(3){
 
 .shareCard{
 
-position:absolute;
+    position:absolute;
 
-left:-9999px;
+    left:-5000px;
 
-top:0;
+    top:0;
 
-width:1920px;
+    width:1920px;
 
-min-height:1080px;
+    min-height:1080px;
 
-background:#111;
+    background:#111;
 
-color:white;
+    color:white;
 
-padding:80px;
+    padding:80px;
 
 }
 
