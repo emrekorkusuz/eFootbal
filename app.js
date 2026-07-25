@@ -594,6 +594,7 @@ const downloadImage=document.getElementById("downloadImage");
 
 downloadImage.onclick=()=>{
 
+    console.log("Butona basıldı");
     document.getElementById("shareLeague").innerText=league.name;
 
     document.getElementById("shareSeason").innerText=league.season;
@@ -635,20 +636,22 @@ downloadImage.onclick=()=>{
     });
 
     html2canvas(document.getElementById("shareCard"),{
-
         scale:2,
-
-        backgroundColor:"#111"
-
+        backgroundColor:"#111",
+        useCORS:true
     }).then(canvas=>{
 
-        const a=document.createElement("a");
+        const data = canvas.toDataURL("image/png");
 
-        a.download="puan-durumu.png";
+        const win = window.open();
 
-        a.href=canvas.toDataURL();
-
-        a.click();
+        win.document.write(`
+            <html>
+            <body style="margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;">
+                <img src="${data}" style="width:100%;height:auto;">
+            </body>
+            </html>
+        `);
 
     });
 
