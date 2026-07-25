@@ -1,52 +1,112 @@
-// ===== Veri =====
+//======================================
+// eFootball League Manager
+//======================================
+
+//--------------- VERİLER ---------------
+
+let league = {
+    name: "eFootball League",
+    season: "2026"
+};
+
 let players = [];
 let matches = [];
+let currentRound = 1;
 
-// ===== HTML Elemanları =====
-const playerInput = document.getElementById("playerName");
-const addPlayerBtn = document.getElementById("addPlayer");
-const fixtureBtn = document.getElementById("fixtureBtn");
+//--------------- HTML ------------------
 
+const leagueName = document.getElementById("leagueName");
+const seasonName = document.getElementById("seasonName");
+
+const saveLeague = document.getElementById("saveLeague");
+
+const playerName = document.getElementById("playerName");
+const addPlayer = document.getElementById("addPlayer");
 const playerList = document.getElementById("playerList");
+
+const roundSelect = document.getElementById("roundSelect");
 
 const homePlayer = document.getElementById("homePlayer");
 const awayPlayer = document.getElementById("awayPlayer");
 
-const homeScore = document.getElementById("homeScore");
-const awayScore = document.getElementById("awayScore");
+const addMatch = document.getElementById("addMatch");
+const newRound = document.getElementById("newRound");
 
-const saveMatchBtn = document.getElementById("saveMatch");
+const fixtureList = document.getElementById("fixtureList");
 
 const standings = document.getElementById("standings");
-const history = document.getElementById("matchHistory");
 
-// ===== Başlat =====
-window.onload = () => {
+// İstatistik
+
+const playerCount=document.getElementById("playerCount");
+const matchCount=document.getElementById("matchCount");
+const playedCount=document.getElementById("playedCount");
+const remainCount=document.getElementById("remainCount");
+const goalCount=document.getElementById("goalCount");
+const goalAverage=document.getElementById("goalAverage");
+
+//======================================
+// Başlat
+//======================================
+
+window.onload=()=>{
+
     loadData();
+
     render();
+
 };
 
-// ===== Oyuncu Ekle =====
-addPlayerBtn.onclick = () => {
+//======================================
+// Lig Bilgisi
+//======================================
 
-    const name = playerInput.value.trim();
+saveLeague.onclick=()=>{
+
+    league.name=leagueName.value.trim();
+
+    league.season=seasonName.value.trim();
+
+    if(league.name==="")
+        league.name="eFootball League";
+
+    if(league.season==="")
+        league.season="2026";
+
+    saveData();
+
+};
+
+//======================================
+// Oyuncu
+//======================================
+
+addPlayer.onclick=()=>{
+
+    const name=playerName.value.trim();
 
     if(name==="") return;
 
     players.push({
+
         id:Date.now(),
+
         name:name,
+
         played:0,
         win:0,
         draw:0,
         lose:0,
+
         gf:0,
         ga:0,
         gd:0,
+
         point:0
+
     });
 
-    playerInput.value="";
+    playerName.value="";
 
     saveData();
 
@@ -54,187 +114,349 @@ addPlayerBtn.onclick = () => {
 
 };
 
-// ===== Render =====
-function render(){
-
-    renderPlayers();
-
-    renderSelects();
-
-    renderTable();
-
-    renderHistory();
-
-}
-
-// =========================
-// Oyuncu Listesi
-// =========================
-
-function renderPlayers(){
-
-    playerList.innerHTML="";
-
-    players.forEach(p=>{
-
-        const div=document.createElement("div");
-
-        div.className="match";
-
-        div.innerHTML=`
-        <span>${p.name}</span>
-
-        <button onclick="deletePlayer(${p.id})">
-        🗑
-        </button>
-        `;
-
-        playerList.appendChild(div);
-
-    });
-
-}
-
 function deletePlayer(id){
 
-    if(!confirm("Oyuncu silinsin mi?")) return;
+    if(!confirm("Oyuncu silinsin mi?"))
+        return;
 
     players=players.filter(p=>p.id!==id);
 
     matches=matches.filter(m=>m.home!==id && m.away!==id);
 
-    recalculate();
+    saveData();
+
+    render();
 
 }
 
-// =========================
-// Select Kutuları
-// =========================
+//======================================
+// Yeni Hafta
+//======================================
 
-function renderSelects(){
+newRound.onclick=()=>{
+
+    currentRound++;
+
+    saveData();
+
+    renderRounds();
+
+};
+
+//======================================
+// Maç Ekle
+//======================================
+
+addMatch.onclick=()=>{
+
+    const home=Number(homePlayer.value);
+    const away=Number(awayPlayer.value);
+
+    if(home===away){
+
+        alert("Aynı oyuncu seçilemez.");
+
+        return;
+
+    }
+
+    matches.push({
+
+        id:Date.now(),
+
+        round:Number(roundSelect.value),
+
+        home,
+
+        away,
+
+        hs:null,
+
+        as:null
+
+    });
+
+    saveData();
+
+    render();
+
+};
+
+//======================================
+// Render
+//======================================
+
+function render(){
+
+    renderPlayers();
+
+    renderPlayersSelect();
+
+    renderRounds();
+
+}
+
+//======================================
+// Oyuncu Listesi
+//======================================
+
+function renderPlayers(){
+
+    playerList.innerHTML="";
+
+    players.forEach(player=>{
+
+        playerList.innerHTML+=`
+
+        <div class="playerItem">
+
+            <span>${player.name}</span>
+
+            <button
+            class="deleteBtn"
+            onclick="deletePlayer(${player.id})">
+
+            Sil
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+//======================================
+// Oyuncu Selectleri
+//======================================
+
+function renderPlayersSelect(){
 
     homePlayer.innerHTML="";
     awayPlayer.innerHTML="";
 
-    players.forEach(p=>{
+    players.forEach(player=>{
 
         homePlayer.innerHTML+=`
-        <option value="${p.id}">
-        ${p.name}
+        <option value="${player.id}">
+        ${player.name}
         </option>`;
 
         awayPlayer.innerHTML+=`
-        <option value="${p.id}">
-        ${p.name}
+        <option value="${player.id}">
+        ${player.name}
         </option>`;
 
     });
 
 }
 
-// =========================
-// Maç Kaydet
-// =========================
+//======================================
+// Haftalar
+//======================================
 
-saveMatchBtn.onclick=()=>{
+function renderRounds(){
 
-const home=Number(homePlayer.value);
-const away=Number(awayPlayer.value);
+    roundSelect.innerHTML="";
 
-if(home===away){
+    for(let i=1;i<=currentRound;i++){
 
-alert("Aynı oyuncu seçilemez.");
+        roundSelect.innerHTML+=`
+        <option value="${i}">
+        ${i}. Hafta
+        </option>`;
 
-return;
+    }
 
-}
-
-const hs=Number(homeScore.value);
-const as=Number(awayScore.value);
-
-if(isNaN(hs)||isNaN(as)){
-
-alert("Skor gir.");
-
-return;
+    renderMatches();
 
 }
 
-matches.push({
+//======================================
+// Maçlar
+//======================================
 
-id:Date.now(),
+function renderMatches(){
 
-home,
+    fixtureList.innerHTML="";
 
-away,
+    for(let round=1;round<=currentRound;round++){
 
-hs,
+        fixtureList.innerHTML+=`
 
-as,
+        <h3 class="roundTitle">
 
-date:new Date().toLocaleString("tr-TR")
+        ${round}. HAFTA
 
-});
+        </h3>
 
-homeScore.value="";
-awayScore.value="";
+        `;
 
-recalculate();
+        matches
+        .filter(m=>m.round===round)
+        .forEach(match=>{
 
-};
+            const home=players.find(x=>x.id===match.home);
+            const away=players.find(x=>x.id===match.away);
 
-// =========================
-// Puan Tablosunu Hesapla
-// =========================
+            fixtureList.innerHTML+=`
 
-function recalculate(){
+            <div class="fixtureCard">
 
-    // İstatistikleri sıfırla
+            <div class="matchRow">
+
+            <b>${home.name}</b>
+
+            <input
+            type="number"
+            min="0"
+            id="hs${match.id}"
+            value="${match.hs??""}">
+
+            <span>-</span>
+
+            <input
+            type="number"
+            min="0"
+            id="as${match.id}"
+            value="${match.as??""}">
+
+            <b>${away.name}</b>
+
+            <button
+            onclick="saveScore(${match.id})">
+
+            Kaydet
+
+            </button>
+
+            <button
+            class="deleteBtn"
+            onclick="deleteMatch(${match.id})">
+
+            🗑
+
+            </button>
+
+            </div>
+
+            </div>
+
+            `;
+
+        });
+
+    }
+
+}
+
+//======================================
+// Skor Kaydet
+//======================================
+
+function saveScore(id){
+
+    const match=matches.find(m=>m.id===id);
+
+    const hs=Number(document.getElementById("hs"+id).value);
+    const as=Number(document.getElementById("as"+id).value);
+
+    if(isNaN(hs)||isNaN(as)){
+
+        alert("Skor giriniz.");
+
+        return;
+
+    }
+
+    match.hs=hs;
+    match.as=as;
+
+    calculateTable();
+
+}
+
+//======================================
+// Maç Sil
+//======================================
+
+function deleteMatch(id){
+
+    if(!confirm("Maç silinsin mi?"))
+        return;
+
+    matches=matches.filter(m=>m.id!==id);
+
+    calculateTable();
+
+}
+
+//======================================
+// Puan Hesabı
+//======================================
+
+function calculateTable(){
+
     players.forEach(p=>{
 
         p.played=0;
         p.win=0;
         p.draw=0;
         p.lose=0;
+
         p.gf=0;
         p.ga=0;
         p.gd=0;
+
         p.point=0;
 
     });
 
-    // Tüm maçları yeniden hesapla
-    matches.forEach(m=>{
+    let totalGoals=0;
+    let played=0;
 
-        const home=players.find(x=>x.id===m.home);
-        const away=players.find(x=>x.id===m.away);
+    matches.forEach(match=>{
 
-        if(!home || !away) return;
+        if(match.hs===null||match.as===null)
+            return;
+
+        played++;
+
+        totalGoals+=match.hs+match.as;
+
+        const home=players.find(x=>x.id===match.home);
+        const away=players.find(x=>x.id===match.away);
 
         home.played++;
         away.played++;
 
-        home.gf+=m.hs;
-        home.ga+=m.as;
+        home.gf+=match.hs;
+        home.ga+=match.as;
 
-        away.gf+=m.as;
-        away.ga+=m.hs;
+        away.gf+=match.as;
+        away.ga+=match.hs;
 
-        if(m.hs>m.as){
+        if(match.hs>match.as){
 
             home.win++;
             away.lose++;
 
             home.point+=3;
 
-        }else if(m.hs<m.as){
+        }
+
+        else if(match.hs<match.as){
 
             away.win++;
             home.lose++;
 
             away.point+=3;
 
-        }else{
+        }
+
+        else{
 
             home.draw++;
             away.draw++;
@@ -247,7 +469,9 @@ function recalculate(){
     });
 
     players.forEach(p=>{
+
         p.gd=p.gf-p.ga;
+
     });
 
     players.sort((a,b)=>{
@@ -258,21 +482,36 @@ function recalculate(){
         if(b.gd!==a.gd)
             return b.gd-a.gd;
 
-        return b.gf-a.gf;
+        if(b.gf!==a.gf)
+            return b.gf-a.gf;
+
+        return a.name.localeCompare(b.name);
 
     });
 
-    saveData();
+    renderStandings();
 
-    render();
+    playerCount.textContent=players.length;
+    matchCount.textContent=matches.length;
+    playedCount.textContent=played;
+    remainCount.textContent=matches.length-played;
+
+    goalCount.textContent=totalGoals;
+
+    goalAverage.textContent=
+        played==0
+        ?0
+        :(totalGoals/played).toFixed(2);
+
+    saveData();
 
 }
 
-// =========================
+//======================================
 // Puan Tablosu
-// =========================
+//======================================
 
-function renderTable(){
+function renderStandings(){
 
     standings.innerHTML="";
 
@@ -280,164 +519,137 @@ function renderTable(){
 
         let medal="";
 
-        if(index===0) medal="🏆";
-        else if(index===1) medal="🥈";
-        else if(index===2) medal="🥉";
+        if(index==0) medal="🏆";
+        else if(index==1) medal="🥈";
+        else if(index==2) medal="🥉";
 
         standings.innerHTML+=`
 
-<tr>
+        <tr>
 
-<td>${index+1}</td>
+        <td>${index+1}</td>
 
-<td>${medal} ${p.name}</td>
+        <td>${medal} ${p.name}</td>
 
-<td>${p.played}</td>
+        <td>${p.played}</td>
 
-<td>${p.win}</td>
+        <td>${p.win}</td>
 
-<td>${p.draw}</td>
+        <td>${p.draw}</td>
 
-<td>${p.lose}</td>
+        <td>${p.lose}</td>
 
-<td>${p.gf}</td>
+        <td>${p.gf}</td>
 
-<td>${p.ga}</td>
+        <td>${p.ga}</td>
 
-<td>${p.gd}</td>
+        <td>${p.gd>0?"+":""}${p.gd}</td>
 
-<td>${p.point}</td>
+        <td><b>${p.point}</b></td>
 
-</tr>
+        </tr>
 
-`;
-
-    });
-
-}
-
-// =========================
-// Maç Geçmişi
-// =========================
-
-function renderHistory(){
-
-    history.innerHTML="";
-
-    matches.forEach(m=>{
-
-        const home=players.find(x=>x.id===m.home);
-        const away=players.find(x=>x.id===m.away);
-
-        history.innerHTML+=`
-
-<div class="match">
-
-<div>
-
-<b>${home?.name}</b>
-
-${m.hs}-${m.as}
-
-<b>${away?.name}</b>
-
-<br>
-
-<small>${m.date}</small>
-
-</div>
-
-</div>
-
-`;
+        `;
 
     });
 
 }
 
-// =========================
-// Veriyi Kaydet
-// =========================
+//======================================
+// Local Storage
+//======================================
 
 function saveData(){
 
-localStorage.setItem("ef_players",JSON.stringify(players));
-localStorage.setItem("ef_matches",JSON.stringify(matches));
+    localStorage.setItem("league",JSON.stringify(league));
+
+    localStorage.setItem("players",JSON.stringify(players));
+
+    localStorage.setItem("matches",JSON.stringify(matches));
+
+    localStorage.setItem("currentRound",currentRound);
 
 }
-
-// =========================
-// Veriyi Yükle
-// =========================
 
 function loadData(){
 
-const p=localStorage.getItem("ef_players");
-const m=localStorage.getItem("ef_matches");
+    const l=localStorage.getItem("league");
+    const p=localStorage.getItem("players");
+    const m=localStorage.getItem("matches");
+    const r=localStorage.getItem("currentRound");
 
-players=p?JSON.parse(p):[];
-matches=m?JSON.parse(m):[];
+    if(l) league=JSON.parse(l);
+    if(p) players=JSON.parse(p);
+    if(m) matches=JSON.parse(m);
+    if(r) currentRound=Number(r);
 
-recalculate();
+    leagueName.value=league.name;
+    seasonName.value=league.season;
 
-}
-
-// =========================
-// Fikstür
-// =========================
-
-fixtureBtn.onclick=()=>{
-
-let text="";
-
-for(let i=0;i<players.length;i++){
-
-for(let j=i+1;j<players.length;j++){
-
-text+=`${players[i].name} ⚔️ ${players[j].name}\n`;
+    calculateTable();
 
 }
 
-}
+const downloadImage=document.getElementById("downloadImage");
 
-if(text===""){
+downloadImage.onclick=()=>{
 
-alert("En az 2 oyuncu ekleyin.");
+    document.getElementById("shareLeague").innerText=league.name;
 
-return;
+    document.getElementById("shareSeason").innerText=league.season;
 
-}
+    const body=document.getElementById("shareStandings");
 
-alert(text);
+    body.innerHTML="";
+
+    players.forEach((p,index)=>{
+
+        body.innerHTML+=`
+
+        <tr>
+
+        <td>${index+1}</td>
+
+        <td>${p.name}</td>
+
+        <td>${p.played}</td>
+
+        <td>${p.win}</td>
+
+        <td>${p.draw}</td>
+
+        <td>${p.lose}</td>
+
+        <td>${p.gf}</td>
+
+        <td>${p.ga}</td>
+
+        <td>${p.gd}</td>
+
+        <td>${p.point}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+    html2canvas(document.getElementById("shareCard"),{
+
+        scale:2,
+
+        backgroundColor:"#111"
+
+    }).then(canvas=>{
+
+        const a=document.createElement("a");
+
+        a.download="puan-durumu.png";
+
+        a.href=canvas.toDataURL();
+
+        a.click();
+
+    });
 
 };
-
-// =========================
-// PNG Kaydet
-// =========================
-
-document
-.getElementById("downloadImage")
-.onclick=()=>{
-
-html2canvas(
-document.getElementById("scoreCard"),
-{
-backgroundColor:"#0b1220",
-scale:3
-}
-
-).then(canvas=>{
-
-const link=document.createElement("a");
-
-link.download="PuanTablosu.png";
-
-link.href=canvas.toDataURL();
-
-link.click();
-
-});
-
-};
-

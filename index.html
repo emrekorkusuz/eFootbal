@@ -1,34 +1,65 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>eFootball League</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0057ff">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="style.css">
+<title>eFootball League Manager</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </head>
 
 <body>
 
 <header>
-    <h1>🏆 eFootball League</h1>
-    <p>Lig Yönetim Sistemi</p>
+
+<h1>🏆 eFootball League</h1>
+
+<p>League Manager</p>
+
 </header>
 
-<main>
+<div class="container">
 
-<section class="card">
+<!-- LİG -->
+
+<div class="card">
+
+<h2>Lig Bilgileri</h2>
+
+<input
+type="text"
+id="leagueName"
+placeholder="Lig Adı">
+
+<input
+type="text"
+id="seasonName"
+placeholder="Sezon">
+
+<button id="saveLeague">
+
+Kaydet
+
+</button>
+
+</div>
+
+<!-- OYUNCULAR -->
+
+<div class="card">
 
 <h2>Oyuncular</h2>
 
 <div class="row">
 
 <input
+type="text"
 id="playerName"
 placeholder="Oyuncu Adı">
 
@@ -42,43 +73,49 @@ Oyuncu Ekle
 
 <div id="playerList"></div>
 
-<button id="fixtureBtn">
+</div>
 
-📅 Fikstür Oluştur
+<!-- FİKSTÜR -->
 
-</button>
+<div class="card">
 
-</section>
+<h2>Fikstür</h2>
 
-<section class="card">
+<div class="row">
 
-<h2>Maç Sonucu</h2>
+<select id="roundSelect"></select>
 
 <select id="homePlayer"></select>
 
 <select id="awayPlayer"></select>
 
-<div class="score">
+<button id="addMatch">
 
-<input type="number" id="homeScore">
-
-<span>-</span>
-
-<input type="number" id="awayScore">
-
-</div>
-
-<button id="saveMatch">
-
-Sonucu Kaydet
+Maç Ekle
 
 </button>
 
-</section>
+</div>
 
-<section class="card" id="scoreCard">
+<div class="row">
 
-<h2>Puan Tablosu</h2>
+<button id="newRound">
+
++ Yeni Hafta
+
+</button>
+
+</div>
+
+<div id="fixtureList"></div>
+
+</div>
+
+<!-- PUAN TABLOSU -->
+
+<div class="card">
+
+<h2>Puan Durumu</h2>
 
 <table>
 
@@ -87,14 +124,23 @@ Sonucu Kaydet
 <tr>
 
 <th>#</th>
-<th>Takım</th>
+
+<th>Oyuncu</th>
+
 <th>O</th>
+
 <th>G</th>
+
 <th>B</th>
+
 <th>M</th>
+
 <th>AG</th>
+
 <th>YG</th>
+
 <th>AV</th>
+
 <th>P</th>
 
 </tr>
@@ -107,27 +153,86 @@ Sonucu Kaydet
 
 </table>
 
-<br>
+</div>
+
+<!-- İSTATİSTİK -->
+
+<div class="card">
+
+<h2>Lig İstatistikleri</h2>
+
+<div class="stats">
+
+<div>👥 Oyuncu <span id="playerCount">0</span></div>
+
+<div>⚽ Maç <span id="matchCount">0</span></div>
+
+<div>✅ Oynanan <span id="playedCount">0</span></div>
+
+<div>⌛ Kalan <span id="remainCount">0</span></div>
+
+<div>🥅 Gol <span id="goalCount">0</span></div>
+
+<div>📊 Ortalama <span id="goalAverage">0</span></div>
+
+</div>
+
+</div>
+
+<!-- PNG -->
+
+<div class="card">
 
 <button id="downloadImage">
 
-📷 Puan Tablosunu Kaydet
+📷 Yayın Grafiği Oluştur
 
 </button>
 
-</section>
+</div>
 
-<section class="card">
-
-<h2>Maç Geçmişi</h2>
-
-<div id="matchHistory"></div>
-
-</section>
-
-</main>
+</div>
 
 <script src="app.js"></script>
 
+<div id="shareCard" class="shareCard">
+
+    <div class="shareHeader">
+
+        <h1 id="shareLeague"></h1>
+
+        <h3 id="shareSeason"></h3>
+
+    </div>
+
+    <h2>PUAN DURUMU</h2>
+
+    <table class="shareTable">
+
+        <thead>
+
+            <tr>
+
+                <th>#</th>
+                <th>Oyuncu</th>
+                <th>O</th>
+                <th>G</th>
+                <th>B</th>
+                <th>M</th>
+                <th>AG</th>
+                <th>YG</th>
+                <th>AV</th>
+                <th>P</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="shareStandings"></tbody>
+
+    </table>
+
+</div>
 </body>
+
 </html>
