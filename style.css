@@ -331,21 +331,20 @@ tbody tr:nth-child(3){
 }
 
 .shareCard{
-
-    position:absolute;
-
-    left:-99999px;
+    position:fixed;
+    left:0;
+    top:0;
 
     width:1920px;
-
     min-height:1080px;
 
     background:#111;
-
-    color:white;
-
+    color:#fff;
     padding:80px;
 
+    opacity:0;
+    pointer-events:none;
+    z-index:-1;
 }
 
 .shareHeader{
