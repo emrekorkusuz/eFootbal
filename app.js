@@ -656,8 +656,6 @@ downloadImage.onclick=()=>{
 
 
 
-    const matchBox=document.getElementById("shareMatches");
-
 
     matchBox.innerHTML="";
 
@@ -723,18 +721,30 @@ downloadImage.onclick=()=>{
 
 
     const card=document.getElementById("shareCard");
+
+
+    card.style.opacity="1";
+    card.style.zIndex="9999";
+
+
     html2canvas(card,{
 
         scale:2,
 
         backgroundColor:"#111",
 
-        useCORS:true,
+        width:1920,
 
-        logging:false
+        height:1080,
+
+        useCORS:true
 
     })
     .then(canvas=>{
+
+
+        card.style.opacity="0";
+        card.style.zIndex="-1";
 
 
         canvas.toBlob(async(blob)=>{
@@ -767,6 +777,17 @@ downloadImage.onclick=()=>{
                     title:league.name
 
                 });
+
+            }
+            else{
+
+                let link=document.createElement("a");
+
+                link.download="efootball-lig.png";
+
+                link.href=canvas.toDataURL();
+
+                link.click();
 
             }
 

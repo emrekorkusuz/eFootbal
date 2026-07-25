@@ -332,9 +332,9 @@ tbody tr:nth-child(3){
 
 .shareCard{
 
-    position:absolute;
+    position:fixed;
 
-    left:-5000px;
+    left:0;
 
     top:0;
 
@@ -347,6 +347,10 @@ tbody tr:nth-child(3){
     color:white;
 
     padding:80px;
+
+    z-index:-1;
+
+    opacity:0;
 
 }
 
