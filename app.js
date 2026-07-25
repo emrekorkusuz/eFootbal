@@ -35,6 +35,7 @@ const newRound = document.getElementById("newRound");
 const fixtureList = document.getElementById("fixtureList");
 
 const standings = document.getElementById("standings");
+const shareMatches = document.getElementById("shareMatches");
 
 // İstatistik
 
@@ -606,6 +607,8 @@ downloadImage.onclick=()=>{
 
 
     const body = document.getElementById("shareStandings");
+    const matchBox = document.getElementById("shareMatches");
+    matchBox.innerHTML="";
 
 
     body.innerHTML = "";
@@ -639,6 +642,60 @@ downloadImage.onclick=()=>{
         <td>${p.point}</td>
 
         </tr>
+
+        `;
+
+
+    });
+
+    matches.forEach(match=>{
+
+
+        const home = players.find(
+            p=>p.id===match.home
+        );
+
+
+        const away = players.find(
+            p=>p.id===match.away
+        );
+
+
+        if(!home || !away)
+            return;
+
+
+
+        matchBox.innerHTML += `
+
+        <div class="shareMatch">
+
+            <b>${match.round}. Hafta</b>
+
+            <span>
+            ${home.name}
+            </span>
+
+
+            <strong>
+
+            ${
+                match.hs===null
+                ?
+                "-"
+                :
+                match.hs+" - "+match.as
+            }
+
+            </strong>
+
+
+            <span>
+            ${away.name}
+            </span>
+
+
+        </div>
 
         `;
 
