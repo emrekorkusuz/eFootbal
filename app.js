@@ -748,52 +748,51 @@ downloadImage.onclick=()=>{
         card.style.zIndex="-1";
 
 
-        canvas.toBlob(async(blob)=>{
+        canvas.toBlob(async (blob) => {
 
+            if (!blob) {
+                const link = document.createElement("a");
+                link.download = "efootball-lig.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                return;
+            }
 
-            const file=new File(
+            try {
 
-                [blob],
-
-                "efootball-lig.png",
-
-                {
-                    type:"image/png"
-                }
-
-            );
-
-
-            if(
-                navigator.canShare &&
-                navigator.canShare({
-                    files:[file]
-                })
-            ){
-
-                await navigator.share({
-
-                    files:[file],
-
-                    title:league.name
-
+                const file = new File([blob], "efootball-lig.png", {
+                    type: "image/png"
                 });
 
-            }
-            else{
+                if (
+                    navigator.canShare &&
+                    navigator.canShare({ files: [file] })
+                ) {
 
-                let link=document.createElement("a");
+                    await navigator.share({
+                        files: [file],
+                        title: league.name
+                    });
 
-                link.download="efootball-lig.png";
+                } else {
 
-                link.href=canvas.toDataURL();
+                    const link = document.createElement("a");
+                    link.download = "efootball-lig.png";
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
 
+                }
+
+            } catch (e) {
+
+                const link = document.createElement("a");
+                link.download = "efootball-lig.png";
+                link.href = canvas.toDataURL("image/png");
                 link.click();
 
             }
 
-
-        });
+        }, "image/png");
 
 
     });
