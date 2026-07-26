@@ -58,10 +58,6 @@ window.onload=()=>{
 
 };
 
-const searchPlayer=document.getElementById("searchPlayer");
-
-searchPlayer.oninput=renderPlayers;
-
 //======================================
 // Lig Bilgisi
 //======================================
@@ -81,12 +77,6 @@ saveLeague.onclick=()=>{
     saveData();
 
 };
-
-<td class="${p.gd>=0?'plus':'minus'}">
-
-${p.gd>0?'+':''}${p.gd}
-
-</td>
 
 //======================================
 // Oyuncu
@@ -133,26 +123,6 @@ function deletePlayer(id){
     players=players.filter(p=>p.id!==id);
 
     matches=matches.filter(m=>m.home!==id && m.away!==id);
-
-    saveData();
-
-    render();
-
-}
-
-function editPlayer(id){
-
-    const player=players.find(p=>p.id===id);
-
-    if(!player) return;
-
-    const newName=prompt("Yeni oyuncu adı",player.name);
-
-    if(newName===null) return;
-
-    if(newName.trim()==="") return;
-
-    player.name=newName.trim();
 
     saveData();
 
@@ -241,37 +211,15 @@ function renderPlayers(){
 
         <div class="playerItem">
 
-            <div class="playerName">
+            <span>${player.name}</span>
 
-                <div class="playerAvatar">
+            <button
+            class="deleteBtn"
+            onclick="deletePlayer(${player.id})">
 
-                    ${player.name.charAt(0).toUpperCase()}
+            Sil
 
-                </div>
-
-                <span>${player.name}</span>
-
-            </div>
-
-            <div class="playerButtons">
-
-                <button
-                    class="editBtn"
-                    onclick="editPlayer(${player.id})">
-
-                    Düzenle
-
-                </button>
-
-                <button
-                    class="deleteBtn"
-                    onclick="deletePlayer(${player.id})">
-
-                    Sil
-
-                </button>
-
-            </div>
+            </button>
 
         </div>
 
@@ -333,53 +281,75 @@ function renderRounds(){
 
 function renderMatches(){
 
-    fixtureList.innerHTML += `
+    fixtureList.innerHTML="";
 
-    <div class="fixtureCard">
+    for(let round=1;round<=currentRound;round++){
 
-    <div class="matchRow">
+        fixtureList.innerHTML+=`
 
-    <div class="teamName">${home.name}</div>
+        <h3 class="roundTitle">
 
-    <input
-    class="scoreInput"
-    type="number"
-    min="0"
-    id="hs${match.id}"
-    value="${match.hs ?? ""}">
+        ${round}. HAFTA
 
-    <div style="text-align:center;font-size:26px;">-</div>
+        </h3>
 
-    <input
-    class="scoreInput"
-    type="number"
-    min="0"
-    id="as${match.id}"
-    value="${match.as ?? ""}">
+        `;
 
-    <div class="teamName">${away.name}</div>
+        matches
+        .filter(m=>m.round===round)
+        .forEach(match=>{
 
-    <button
-    class="saveBtn"
-    onclick="saveScore(${match.id})">
+            const home=players.find(x=>x.id===match.home);
+            const away=players.find(x=>x.id===match.away);
 
-    💾
+            fixtureList.innerHTML+=`
 
-    </button>
+            <div class="fixtureCard">
 
-    <button
-    class="removeBtn"
-    onclick="deleteMatch(${match.id})">
+            <div class="matchRow">
 
-    🗑
+            <b>${home.name}</b>
 
-    </button>
+            <input
+            type="number"
+            min="0"
+            id="hs${match.id}"
+            value="${match.hs??""}">
 
-    </div>
+            <span>-</span>
 
-    </div>
+            <input
+            type="number"
+            min="0"
+            id="as${match.id}"
+            value="${match.as??""}">
 
-    `;
+            <b>${away.name}</b>
+
+            <button
+            onclick="saveScore(${match.id})">
+
+            Kaydet
+
+            </button>
+
+            <button
+            class="deleteBtn"
+            onclick="deleteMatch(${match.id})">
+
+            🗑
+
+            </button>
+
+            </div>
+
+            </div>
+
+            `;
+
+        });
+
+    }
 
 }
 
@@ -422,43 +392,6 @@ function deleteMatch(id){
 
     calculateTable();
 
-}
-
-function renderAwards(){
-
-    if(players.length===0){
-
-        leaderPlayer.textContent="-";
-        topScorer.textContent="-";
-        bestDefense.textContent="-";
-        formPlayer.textContent="-";
-
-        return;
-
-    }
-
-    const leader=players[0];
-
-    leaderPlayer.textContent=
-        leader.name+" ("+leader.point+" P)";
-
-    const scorer=[...players]
-    .sort((a,b)=>b.gf-a.gf)[0];
-
-    topScorer.textContent=
-        scorer.name+" ("+scorer.gf+")";
-
-    const defense=[...players]
-    .sort((a,b)=>a.ga-b.ga)[0];
-
-    bestDefense.textContent=
-        defense.name+" ("+defense.ga+")";
-
-    const form=[...players]
-    .sort((a,b)=>b.win-a.win)[0];
-
-    formPlayer.textContent=
-        form.name+" ("+form.win+" G)";
 }
 
 //======================================
@@ -558,7 +491,6 @@ function calculateTable(){
     });
 
     renderStandings();
-    renderAwards();
 
     playerCount.textContent=players.length;
     matchCount.textContent=matches.length;
@@ -588,49 +520,33 @@ function renderStandings(){
 
         let medal="";
 
-        if(index===0) medal="🏆";
-        else if(index===1) medal="🥈";
-        else if(index===2) medal="🥉";
+        if(index==0) medal="🏆";
+        else if(index==1) medal="🥈";
+        else if(index==2) medal="🥉";
 
         standings.innerHTML+=`
 
         <tr>
 
-            <td>
+        <td>${index+1}</td>
 
-                <div class="rankBadge">
+        <td>${medal} ${p.name}</td>
 
-                    ${index+1}
+        <td>${p.played}</td>
 
-                </div>
+        <td>${p.win}</td>
 
-            </td>
+        <td>${p.draw}</td>
 
-            <td style="text-align:left">
+        <td>${p.lose}</td>
 
-                ${medal} ${p.name}
+        <td>${p.gf}</td>
 
-            </td>
+        <td>${p.ga}</td>
 
-            <td>${p.played}</td>
+        <td>${p.gd>0?"+":""}${p.gd}</td>
 
-            <td>${p.win}</td>
-
-            <td>${p.draw}</td>
-
-            <td>${p.lose}</td>
-
-            <td>${p.gf}</td>
-
-            <td>${p.ga}</td>
-
-            <td>${p.gd>0?"+":""}${p.gd}</td>
-
-            <td>
-
-                <b>${p.point}</b>
-
-            </td>
+        <td><b>${p.point}</b></td>
 
         </tr>
 
@@ -686,152 +602,57 @@ function loadData(){
 const downloadImage=document.getElementById("downloadImage");
 
 
-downloadImage.onclick = async ()=>{
+downloadImage.onclick=()=>{
 
-    // Başlık
-    document.getElementById("shareLeague").textContent = league.name;
-    document.getElementById("shareSeason").textContent = league.season;
 
-    // Puan Tablosu
-    const table = document.getElementById("shareStandings");
-    table.innerHTML = "";
+    document.getElementById("shareLeague").innerText =
+    league.name;
+
+
+    document.getElementById("shareSeason").innerText =
+    league.season;
+
+
+
+    const body=document.getElementById("shareStandings");
+
+    body.innerHTML="";
+
+
 
     players.forEach((p,index)=>{
 
-        let medal="";
 
-        if(index===0) medal="🏆";
-        else if(index===1) medal="🥈";
-        else if(index===2) medal="🥉";
+        body.innerHTML+=`
 
-        table.innerHTML += `
         <tr>
 
-            <td>${index+1}</td>
+        <td>${index+1}</td>
 
-            <td style="text-align:left">
+        <td>${p.name}</td>
 
-                ${medal} ${p.name}
+        <td>${p.played}</td>
 
-            </td>
+        <td>${p.win}</td>
 
-            <td>${p.played}</td>
+        <td>${p.draw}</td>
 
-            <td>${p.win}</td>
+        <td>${p.lose}</td>
 
-            <td>${p.draw}</td>
+        <td>${p.gf}</td>
 
-            <td>${p.lose}</td>
+        <td>${p.ga}</td>
 
-            <td>${p.gf}</td>
+        <td>${p.gd}</td>
 
-            <td>${p.ga}</td>
-
-            <td>${p.gd>0?"+":""}${p.gd}</td>
-
-            <td><b>${p.point}</b></td>
+        <td>${p.point}</td>
 
         </tr>
+
         `;
 
-    });
-
-        document.getElementById("sharePlayerCount").textContent =
-        players.length;
-
-    document.getElementById("shareMatchCount").textContent =
-        matches.length;
-
-    const played =
-        matches.filter(m=>m.hs!==null && m.as!==null);
-
-    document.getElementById("sharePlayedCount").textContent =
-        played.length;
-
-    document.getElementById("shareRemainCount").textContent =
-        matches.length-played.length;
-
-    let totalGoals=0;
-
-    played.forEach(m=>{
-
-        totalGoals+=m.hs+m.as;
 
     });
-
-    document.getElementById("shareGoalCount").textContent=
-        totalGoals;
-
-    document.getElementById("shareGoalAverage").textContent=
-
-        played.length==0
-
-        ?0
-
-        :(totalGoals/played.length).toFixed(2);
-
-            const box=document.getElementById("shareMatches");
-
-    box.innerHTML="";
-
-    for(let round=1;round<=currentRound;round++){
-
-        const roundMatches=
-        matches.filter(x=>x.round===round);
-
-        if(roundMatches.length===0) continue;
-
-        roundMatches.forEach(match=>{
-
-            const home=
-            players.find(x=>x.id===match.home);
-
-            const away=
-            players.find(x=>x.id===match.away);
-
-            box.innerHTML+=`
-
-            <div class="shareMatch">
-
-                <span>
-
-                    ${round}. Hafta
-
-                </span>
-
-                <b>
-
-                    ${home.name}
-
-                </b>
-
-                <strong>
-
-                ${
-                    match.hs===null
-                    ?
-                    "-"
-                    :
-                    match.hs+" - "+match.as
-                }
-
-                </strong>
-
-                <b>
-
-                    ${away.name}
-
-                </b>
-
-            </div>
-
-            `;
-
-        });
-
-    }
-
-    
 
 
 
