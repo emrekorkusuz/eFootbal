@@ -731,13 +731,9 @@ downloadImage.onclick=()=>{
     html2canvas(card,{
 
         scale:2,
-
         backgroundColor:"#111",
-
         width:1920,
-
         height:1080,
-
         useCORS:true
 
     })
