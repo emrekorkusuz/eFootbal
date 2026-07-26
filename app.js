@@ -689,9 +689,9 @@ downloadImage.onclick=()=>{
         </span>
 
 
-        <b>
+        <b><strong>
         ${home.name}
-        </b>
+        </strong></b>
 
 
         <strong>
@@ -707,9 +707,9 @@ downloadImage.onclick=()=>{
         </strong>
 
 
-        <b>
+        <b><strong>
         ${away.name}
-        </b>
+        </strong></b>
 
 
         </div>
