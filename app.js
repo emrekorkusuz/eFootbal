@@ -604,7 +604,7 @@ const downloadImage=document.getElementById("downloadImage");
 
 downloadImage.onclick=()=>{
 
-
+    const matchBox = document.getElementById("shareMatches");
     document.getElementById("shareLeague").innerText =
     league.name;
 
@@ -657,7 +657,7 @@ downloadImage.onclick=()=>{
 
 
 
-    matchBox.innerHTML="";
+    shareMatches.innerHTML = "";
 
 
 
@@ -679,7 +679,7 @@ downloadImage.onclick=()=>{
 
 
 
-        matchBox.innerHTML+=`
+        shareMatches.innerHTML += `
 
         <div class="shareMatch">
 
