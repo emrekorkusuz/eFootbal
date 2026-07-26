@@ -800,11 +800,3 @@ downloadImage.onclick=()=>{
 
 
 };
-
-const downloadImage = document.getElementById("downloadImage");
-
-console.log(downloadImage);
-
-downloadImage.addEventListener("click", () => {
-    alert("Buton çalışıyor");
-});
