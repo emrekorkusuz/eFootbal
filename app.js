@@ -661,62 +661,33 @@ downloadImage.onclick=()=>{
     shareMatches.innerHTML = "";
 
 
+    let lastRound = -1;
 
-    matches.forEach(match=>{
+    matches.forEach(match => {
 
+        if (match.round !== lastRound) {
 
-        const home=players.find(
-            p=>p.id===match.home
-        );
+            lastRound = match.round;
 
-
-        const away=players.find(
-            p=>p.id===match.away
-        );
-
-
-        if(!home || !away)
-            return;
-
-
-
-        shareMatches.innerHTML += `
-
-        <div class="shareMatch">
-
-        <span>
-        ${match.round}. Hafta
-        </span>
-
-
-        <b><strong>
-        ${home.name}
-        </strong></b>
-
-
-        <strong>
-
-        ${
-            match.hs===null
-            ?
-            "-"
-            :
-            match.hs+" - "+match.as
+            shareMatches.innerHTML += `
+                <h3 class="roundTitle">${match.round}. HAFTA</h3>
+            `;
         }
 
-        </strong>
+        const home = players.find(p => p.id === match.home);
+        const away = players.find(p => p.id === match.away);
 
+        shareMatches.innerHTML += `
+            <div class="shareMatch">
+                <div class="home">${home.name}</div>
 
-        <b><strong>
-        ${away.name}
-        </strong></b>
+                <div class="score">
+                    ${match.hs === null ? "-" : `${match.hs} - ${match.as}`}
+                </div>
 
-
-        </div>
-
+                <div class="away">${away.name}</div>
+            </div>
         `;
-
-
     });
 
 

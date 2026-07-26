@@ -442,36 +442,24 @@ tbody tr:nth-child(3){
     grid-template-columns:1fr 180px 1fr;
     align-items:center;
     gap:20px;
-
-    background:#222;
-    padding:20px;
-    margin-bottom:10px;
-    border-radius:12px;
-    font-size:30px;
+    margin-bottom:12px;
 }
 
-.shareMatch b:first-child{
+.home{
     text-align:right;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.shareMatch strong{
-    display:inline-block;
-    width:180px;
-    padding:8px 0;
-    background:#ffd000;
-    color:#111;
-    border-radius:10px;
-    text-align:center;
-    font-size:40px;
+    font-size:30px;
     font-weight:bold;
 }
 
-.shareMatch b:last-child{
+.score{
+    text-align:center;
+    font-size:40px;
+    font-weight:bold;
+    color:#ffd000;
+}
+
+.away{
     text-align:left;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    font-size:30px;
+    font-weight:bold;
 }
