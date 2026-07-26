@@ -6,16 +6,54 @@
 }
 
 body{
-    background:#0f1115;
+
+    margin:0;
+
+    background:
+    radial-gradient(circle at top,#2b2b2b 0%,#111 35%,#090909 100%);
+
     color:#fff;
+
+    font-family:Inter,sans-serif;
+
+    overflow-x:hidden;
+
 }
 
 header{
-    background:linear-gradient(90deg,#ffd000,#ffb300);
-    color:#111;
-    padding:25px;
+
+    background:linear-gradient(90deg,#ffd400,#ffb000);
+
+    padding:35px;
+
     text-align:center;
-    box-shadow:0 5px 20px rgba(0,0,0,.3);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.45);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+}
+
+header h1{
+
+    font-size:42px;
+
+    letter-spacing:2px;
+
+}
+
+header p{
+
+    font-size:18px;
+
+    margin-top:8px;
+
+    opacity:.75;
+
 }
 
 header h1{
@@ -39,23 +77,35 @@ header p{
 
 .card{
 
-    background:#1a1d24;
+    background:rgba(25,25,25,.90);
 
-    border-radius:18px;
+    border:1px solid rgba(255,212,0,.18);
 
-    padding:20px;
+    border-radius:22px;
 
-    border:1px solid #2b2f39;
+    padding:24px;
 
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
+    box-shadow:
+
+    0 10px 40px rgba(0,0,0,.55),
+
+    inset 0 1px rgba(255,255,255,.04);
+
+    backdrop-filter:blur(12px);
 
 }
 
 .card h2{
 
-    margin-bottom:18px;
+    color:#FFD400;
 
-    color:#ffd000;
+    font-size:28px;
+
+    margin-bottom:20px;
+
+    border-left:6px solid #FFD400;
+
+    padding-left:15px;
 
 }
 
@@ -72,47 +122,54 @@ header p{
 input,
 select{
 
-    flex:1;
-
-    background:#272c35;
-
-    border:none;
+    background:#232323;
 
     color:white;
 
-    padding:13px;
+    border:1px solid #3a3a3a;
 
-    border-radius:10px;
+    border-radius:12px;
+
+    padding:14px;
 
     font-size:15px;
 
 }
 
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:#FFD400;
+
+}
+
 button{
 
-    background:#ffd000;
+    background:#FFD400;
 
     color:#111;
 
     border:none;
 
-    border-radius:10px;
+    border-radius:12px;
 
-    padding:13px 20px;
-
-    cursor:pointer;
+    padding:14px 24px;
 
     font-weight:700;
 
-    transition:.2s;
+    cursor:pointer;
+
+    transition:.25s;
 
 }
 
 button:hover{
 
-    transform:translateY(-2px);
+    transform:translateY(-3px);
 
-    background:#ffe45c;
+    box-shadow:0 10px 20px rgba(255,212,0,.25);
 
 }
 
@@ -120,15 +177,23 @@ table{
 
     width:100%;
 
-    border-collapse:collapse;
+    border-collapse:separate;
+
+    border-spacing:0 8px;
 
 }
 
-thead{
+thead th{
 
-    background:#ffd000;
+    background:linear-gradient(90deg,#FFD400,#FFB700);
 
     color:#111;
+
+    padding:16px;
+
+    font-size:16px;
+
+    font-weight:700;
 
 }
 
@@ -145,6 +210,75 @@ td{
     text-align:center;
 
     border-bottom:1px solid #333;
+
+}
+
+td:last-child{
+
+    color:#FFD400;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+.plus{
+
+    color:#4CAF50;
+
+    font-weight:bold;
+
+}
+
+.minus{
+
+    color:#ff5252;
+
+    font-weight:bold;
+
+}
+
+tbody tr{
+
+    background:#222831;
+
+    transition:.25s;
+
+}
+
+tbody td{
+
+    padding:15px;
+
+    border:none;
+
+}
+
+tbody tr:nth-child(1){
+
+    background:linear-gradient(90deg,#ffd700,#d4af37);
+
+    color:#111;
+
+    font-weight:bold;
+
+}
+
+tbody tr:nth-child(2){
+
+    background:#C0C0C0;
+
+    color:#111;
+
+}
+
+
+tbody tr:nth-child(3){
+
+    background:#CD7F32;
+
+    color:white;
 
 }
 
@@ -174,59 +308,183 @@ tbody tr:nth-child(3){
 
 }
 
+.rankBadge{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+    margin:auto;
+
+    background:#FFD400;
+
+    color:#111;
+
+}
+
 .playerItem{
 
     display:flex;
 
+    align-items:center;
+
     justify-content:space-between;
+
+    background:linear-gradient(90deg,#1d1d1d,#292929);
+
+    border:1px solid rgba(255,212,0,.15);
+
+    border-left:5px solid #FFD400;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    margin-top:12px;
+
+    transition:.25s;
+
+}
+
+.playerItem:hover{
+
+    transform:translateX(6px);
+
+    background:#303030;
+
+}
+
+.playerName{
+
+    display:flex;
 
     align-items:center;
 
-    background:#252a33;
+    gap:12px;
 
-    padding:12px;
+    font-size:18px;
 
-    border-radius:10px;
+    font-weight:600;
 
-    margin-top:10px;
+}
+
+.playerAvatar{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#FFD400;
+
+    color:#111;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+
+    font-size:20px;
+
+}
+
+.playerButtons{
+
+    display:flex;
+
+    gap:8px;
 
 }
 
 .deleteBtn{
 
-    background:#d63c3c;
+    background:#d83b3b;
 
     color:white;
 
-    padding:8px 12px;
+    padding:9px 14px;
+
+}
+
+.deleteBtn:hover{
+
+    background:#ff4d4d;
+
+}
+
+.editBtn{
+
+    background:#2196f3;
+
+    color:white;
+
+    padding:9px 14px;
+
+}
+
+.editBtn:hover{
+
+    background:#42a5f5;
 
 }
 
 .fixtureCard{
 
-    background:#252a33;
+    background:linear-gradient(135deg,#1a1d24,#252a33);
 
-    border-left:4px solid #ffd000;
+    border:1px solid rgba(255,212,0,.15);
 
-    padding:15px;
+    border-left:5px solid #FFD400;
 
-    border-radius:12px;
+    border-radius:18px;
 
-    margin-top:15px;
+    padding:18px;
+
+    margin:18px 0;
+
+    transition:.25s;
+
+}
+
+.fixtureCard:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.45);
 
 }
 
 .matchRow{
 
-    display:flex;
+    display:grid;
+
+    grid-template-columns:1fr 70px 50px 70px 1fr auto auto;
+
+    gap:12px;
 
     align-items:center;
 
-    justify-content:space-between;
+}
 
-    gap:10px;
+.teamName{
 
-    flex-wrap:wrap;
+    font-size:20px;
+
+    font-weight:700;
 
 }
 
@@ -251,6 +509,54 @@ tbody tr:nth-child(3){
     grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 
     gap:12px;
+
+}
+
+.scoreInput{
+
+    width:70px;
+
+    height:52px;
+
+    text-align:center;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    background:#101010;
+
+    border:2px solid #FFD400;
+
+    border-radius:12px;
+
+}
+
+.saveBtn{
+
+    background:#00b050;
+
+    color:white;
+
+}
+
+.saveBtn:hover{
+
+    background:#00d060;
+
+}
+
+.removeBtn{
+
+    background:#d63031;
+
+    color:white;
+
+}
+
+.removeBtn:hover{
+
+    background:#ff5555;
 
 }
 
@@ -292,13 +598,19 @@ tbody tr:nth-child(3){
 
 .roundTitle{
 
-    color:#ffd000;
+    margin-top:35px;
 
-    margin-top:25px;
+    margin-bottom:18px;
 
-    margin-bottom:10px;
+    color:#FFD400;
 
-    font-size:22px;
+    font-size:28px;
+
+    font-weight:700;
+
+    border-left:6px solid #FFD400;
+
+    padding-left:15px;
 
 }
 
@@ -330,27 +642,194 @@ tbody tr:nth-child(3){
 
 }
 
+/* ===========================
+   YAYIN GRAFİĞİ
+=========================== */
+
 .shareCard{
 
     position:fixed;
 
-    left:0;
-
+    left:-99999px;
     top:0;
 
     width:1920px;
+    height:1080px;
 
-    min-height:1080px;
-
-    background:#111;
+    background:
+    radial-gradient(circle at top,#2c2c2c 0%,#111 35%,#090909 100%);
 
     color:white;
 
-    padding:80px;
+    padding:60px;
 
-    z-index:-1;
+    overflow:hidden;
 
-    opacity:0;
+}
+
+.shareTop{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.titleArea{
+
+    text-align:center;
+
+    flex:1;
+
+}
+
+.titleArea h1{
+
+    font-size:72px;
+
+    color:#FFD400;
+
+    letter-spacing:3px;
+
+}
+
+.titleArea h3{
+
+    font-size:34px;
+
+    margin-top:10px;
+
+}
+
+.yellowTitle{
+
+    margin:auto;
+
+    margin-top:25px;
+
+    width:420px;
+
+    background:#FFD400;
+
+    color:#111;
+
+    padding:16px;
+
+    border-radius:12px;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+}
+
+.cornerLogo{
+
+    font-size:90px;
+
+}
+
+.shareCard::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        rgba(255,212,0,.08),
+        transparent 40%,
+        transparent 60%,
+        rgba(255,212,0,.05)
+    );
+
+}
+
+.shareContent{
+
+    display:grid;
+
+    grid-template-columns:3fr 1fr;
+
+    gap:40px;
+
+}
+
+.leftPanel{
+
+    background:#151515;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    border:2px solid rgba(255,212,0,.2);
+
+}
+
+.rightPanel{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.infoCard{
+
+    background:#181818;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    border:2px solid rgba(255,212,0,.25);
+
+}
+
+.infoCard h2{
+
+    color:#FFD400;
+
+    margin-bottom:25px;
+
+    text-align:center;
+
+}
+
+.infoRow{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:16px 0;
+
+    padding:14px;
+
+    background:#222;
+
+    border-radius:10px;
+
+    font-size:24px;
+
+}
+
+.infoRow b{
+
+    color:#FFD400;
+
+    font-size:28px;
 
 }
 
@@ -390,29 +869,31 @@ tbody tr:nth-child(3){
 
 }
 
+
+
 .shareTable{
 
     width:100%;
 
-    border-collapse:collapse;
+    font-size:24px;
 
-    font-size:32px;
+    border-collapse:collapse;
 
 }
 
 .shareTable th{
 
-    background:#ffd000;
+    background:#FFD400;
 
-    color:black;
+    color:#111;
 
-    padding:20px;
+    padding:18px;
 
 }
 
 .shareTable td{
 
-    padding:18px;
+    padding:16px;
 
     text-align:center;
 
@@ -436,8 +917,85 @@ tbody tr:nth-child(3){
 
 }
 
+.matchTitle{
+
+    margin-top:35px;
+
+    color:#FFD400;
+
+    text-align:center;
+
+    font-size:36px;
+
+}
+
+.matchGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+.awards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:15px;
+
+}
+
+.award{
+
+    background:#20242d;
+
+    border:1px solid rgba(255,212,0,.15);
+
+    border-radius:15px;
+
+    padding:20px;
+
+    text-align:center;
+
+}
+
+.award h3{
+
+    color:#FFD400;
+
+    margin-bottom:15px;
+
+}
+
+#searchPlayer{
+
+    margin-bottom:15px;
+
+}
+
+.award span{
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
 
 .shareMatch{
+
+    background:#222;
+
+    border-left:6px solid #FFD400;
+
+    border-radius:14px;
+
+    padding:18px;
 
     display:flex;
 
@@ -445,23 +1003,15 @@ tbody tr:nth-child(3){
 
     align-items:center;
 
-    background:#222;
-
-    padding:20px;
-
-    margin-bottom:10px;
-
-    border-radius:12px;
-
-    font-size:30px;
+    font-size:24px;
 
 }
 
 
 .shareMatch strong{
 
-    color:#ffd000;
+    color:#FFD400;
 
-    font-size:40px;
+    font-size:32px;
 
 }
